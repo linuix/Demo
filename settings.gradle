@@ -1,1 +1,1 @@
-include ':app', ':dexclassloader'
+include ':app', ':dexclassloader', ':memory'
