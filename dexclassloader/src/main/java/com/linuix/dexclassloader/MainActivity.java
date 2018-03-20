@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.txznet.test.ClassTest;
-
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         // 动态加载jar
         try {
             // 包路径定义
-            URL urls = new URL("file:/data/Test.jar");
+            URL urls = new URL("file:/sdcard/Test.jar");
             //GetPI.class
             URLClassLoader urlLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
             Class<URLClassLoader> sysclass = URLClassLoader.class;
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void DLoadDex(){
         Log.d(TAG, "DLoadDex: ");
-        String libPath = "/data/Test.jar"; // 要动态加载的jar
+        String libPath = "/sdcard/Test.jar"; // 要动态加载的jar
         File f = new File(libPath);
         if (f.exists()){
             Log.d(TAG, "DLoadDex: file exists");
@@ -83,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
         /**
          * 进行动态加载，利用java的反射调用com.test.dynamic.MyClass的方法
          */
-        DexClassLoader classLoader = new DexClassLoader(libPath, dexDir.getAbsolutePath(), null, getClassLoader());
+        DexClassLoader dexClassLoader = new DexClassLoader(libPath, dexDir.getAbsolutePath(), null, getClassLoader());
         try {
-            Class<Object> cls = (Class<Object>) classLoader.loadClass("com.txznet.test.ClassTest");
+            Class<Object> cls = (Class<Object>) dexClassLoader.loadClass("com.txznet.test.ClassTest");
             Object object = cls.newInstance();
             Method method = cls.getMethod("test");
             method.invoke(object);
