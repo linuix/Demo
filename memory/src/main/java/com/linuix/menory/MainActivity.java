@@ -15,14 +15,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+
+
     }
 
     public void test(View view) {
-        for (int i = 0; i<10000;i++){
-            UserManger userManger = UserManger.getInstance(this);
-//            User u = new User();
-            Log.d(TAG, "test: i="+i);
-        }
-
+        User.a = "!23";
+//        User u = new User();
+//        User.class.getName();
     }
 }

@@ -5,6 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/Demo.iml" filepath="$PROJECT_DIR$/Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/dexclassloader/dexclassloader.iml" filepath="$PROJECT_DIR$/dexclassloader/dexclassloader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/memory/memory.iml" filepath="$PROJECT_DIR$/memory/memory.iml" />
+      <module fileurl="file://$PROJECT_DIR$/processmessage/processmessage.iml" filepath="$PROJECT_DIR$/processmessage/processmessage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xposed/xposed.iml" filepath="$PROJECT_DIR$/xposed/xposed.iml" />
     </modules>
   </component>
 </project>

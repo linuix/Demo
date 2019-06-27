@@ -1,20 +1,48 @@
 apply plugin: 'com.android.application'
 
+ext.majorNumber = 2
+ext.minorNumber = 10
+ext.revisionNumberCMD = 'git rev-list HEAD --count'
+ext.revisionNumber = revisionNumberCMD.execute().getText().trim().toInteger()
+ext.revisionDescriptionCMD = 'git describe --always'
+ext.tempRevisionDescription = revisionDescriptionCMD.execute().getText().trim()
+ext.revisionDescription = (tempRevisionDescription == null || (tempRevisionDescription).size() == 0) ? new Date().format("yyMMdd") : (tempRevisionDescription).substring((tempRevisionDescription).size() - 6)
+
+
 android {
+    signingConfigs {
+        release {
+            storeFile file('D:/file/key0.jks')
+            keyAlias 'key0'
+            keyPassword 'link20171019'
+            storePassword 'link20171019'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.linuix.demo"
         minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 18
+//        versionCode 1
+//        versionName "1.0"
+        versionCode getVersionCode(false)
+        versionName getVersionName(false)
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def file = output.outputFile
+                    output.outputFile = new File(file.parent, file.name.replace("app-release.apk", "TXZ-Adapter-" + defaultConfig.versionName + ".apk"))
+                }
+            }
+        }
+        debug {
         }
     }
     compileOptions {
@@ -31,4 +59,30 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+}
+
+
+def getVersionCode(boolean isRelease) {
+    // 正式环境
+    if (isRelease) {
+        majorNumber * 1000000 + minorNumber * 10000 + revisionNumber
+    }
+    // debug环境
+    else {
+        Integer.parseInt(new Date().format("yyMMddHHmm"))
+    }
+}
+
+//Major_Version_Number.Minor_Version_Number[Revision_Number[.Build_Number]]
+def getVersionName(boolean isRelease) {
+    // 正式环境
+    if (isRelease) {
+        majorNumber + "." + minorNumber + "." + revisionNumber + "." + revisionDescription
+    }
+    // debug环境
+    else {
+        String today = new Date().format("yyMMdd")
+        String time = new Date().format("HHmmss")
+        majorNumber + "." + minorNumber + "." + revisionNumber + ".$today.$time." + revisionDescription
+    }
 }
