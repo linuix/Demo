@@ -24,13 +24,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View view) {
 
-
 //        DLoadJar();
 
         DLoadDex();
 
-//        ClassTest classTest = new ClassTest();
-//        classTest.test();
 
     }
 
