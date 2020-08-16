@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.linuix.demo">
-
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+    package="com.linuix.shell">
 
     <application
         android:allowBackup="true"
@@ -13,8 +8,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name="com.linuix.demo.APP"
+        android:name="com.linuix.shell.ProxyApplication"
         android:theme="@style/AppTheme">
+
+        <meta-data android:name="APPLICATION_CLASS_NAME" android:value="com.linuix.demo.APP"/>
+
         <activity android:name="com.linuix.demo.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
