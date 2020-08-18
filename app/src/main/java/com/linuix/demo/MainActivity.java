@@ -1,36 +1,65 @@
 package com.linuix.demo;
 
 import android.app.Activity;
-import android.content.res.XmlResourceParser;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class MainActivity extends Activity {
 
-    private static final String TAG = MainActivity.class.getName();
+    private static final String TAG = "MainActivity";
 
+
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: start ");
-        try {
+        setContentView(R.layout.activity_main);
 
-//            setContentView(getResources().getIdentifier("activity_main","layout",getPackageName()));
-            XmlResourceParser xmlResourceParser = getResources().getLayout(R.layout.activity_main);
-            View view = LayoutInflater.from(this).inflate(xmlResourceParser,null);
-            setContentView(view);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Log.d(TAG, "onCreate: end");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                Log.d(TAG, "onCreate run: thread id ="+Thread.currentThread().getId());
+
+                Looper.prepare();
+                handler = new Handler();
+                Looper.loop();
+            }
+        }).start();
+
+
     }
 
 
-    public void open(View view) {
-        Log.d(TAG, "open: "+getClass().getCanonicalName());
+    public void open(final View view) {
+//        Intent intent = new Intent("com.txznet.adapter.BootService");
+//
+//        startService(intent);
+
+        Log.d(TAG, "open: ");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "run: thread id ="+Thread.currentThread().getId());
+                        ((Button)view).setText("aaaaaaaa");
+                    }
+                });
+            }
+        }).start();
     }
 }

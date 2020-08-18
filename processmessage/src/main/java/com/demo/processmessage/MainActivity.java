@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.demo.processmessage.service.RemoteService;
+import com.demo.processmessage.service.RemoteService2;
 
 import java.io.Serializable;
 
@@ -24,6 +25,15 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private Messenger messenger;
+
+    IMessageInterface iMessageInterface ;
+
+    ICallBackInterface.Stub iCallBackInterface = new ICallBackInterface.Stub() {
+        @Override
+        public void callBack(int i) throws RemoteException {
+            Log.d(TAG, "callBack: i = "+i);
+        }
+    };
 
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -39,14 +49,37 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
+
+
+    ServiceConnection serviceConnection2 = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            iMessageInterface = IMessageInterface.Stub.asInterface(service);
+            try {
+                iMessageInterface.setCallBack(iCallBackInterface);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bindService(new Intent(this, RemoteService.class),serviceConnection, Service.BIND_AUTO_CREATE);
+        bindService(new Intent(this, RemoteService.class), serviceConnection, Service.BIND_AUTO_CREATE);
+
+        bindService(new Intent(this, RemoteService2.class), serviceConnection2, BIND_AUTO_CREATE);
     }
 
-    public static class DataMSG implements Parcelable{
+    public static class DataMSG implements Parcelable {
 
         private String msg;
 
@@ -99,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         msg.what = 1;
         DataMSG dataMSG = new DataMSG("test for activity");
         Bundle bundle = new Bundle();
-        bundle.putString("keytest","value1111111111111111111");
+        bundle.putString("keytest", "value1111111111111111111");
         msg.setData(bundle);
         try {
             messenger.send(msg);
