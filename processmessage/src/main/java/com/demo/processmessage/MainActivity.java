@@ -139,6 +139,12 @@ public class MainActivity extends AppCompatActivity {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+
+        try {
+            iMessageInterface.sendMsg("msg for client".getBytes());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
 }
